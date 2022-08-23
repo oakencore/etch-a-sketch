@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesheet.css">
+    <title>Etch-a-Sketch</title>
+</head>
+
+<body>
+    <div class="content">
+        <div class="board"></div>
+        <div class="buttons">
+            <button onclick="clearGrid()">Clear</button>
+            <button onclick="gridSizePrompt()">Size</button>
+            <button onclick="changeColour('grey')">Grey</button>
+            <button onclick="changeColour('black')">Black</button>
+            <button onclick="changeColour('random')">Rainbow</button>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    let colour = "black";
+
+    function createCanvas(size) {
+        let board = document.querySelector(".board");
+        let squares = board.querySelectorAll("div");
+        squares.forEach((div) => div.remove());
+        board.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+        board.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+
+        let amount = size * size
+
+        for (let i = 0; i < amount; i++) {
+            let square = document.createElement("div");
+            square.style.backgroundColor = "white";
+            square.style.border = "thin solid black";
+            square.addEventListener("mouseover", colourSquare);
+            board.insertAdjacentElement("beforeend", square);
+        }
+
+    }
+    createCanvas(3)
+
+    function changeSize(input) {
+        createCanvas(input)
+    }
+    function colourSquare() {
+        if (colour === "random") {
+            console.log('test')
+            let randomColour = "#" + Math.floor(Math.random()*16777215).toString(16);
+            this.style.backgroundColor = randomColour
+        } else {
+            // this is referring to whatever square or div we added the event listener to.
+            this.style.backgroundColor = colour
+        }
+    }
+
+    function changeColour(choice) {
+        colour = choice;
+
+    }
+
+    function gridSizePrompt() {
+        let gridSize = prompt("Please enter the size of your grid");
+        if (gridSize <= 100) {
+            changeSize(gridSize)
+        } else {
+            alert("That's too large. Pick a smaller size");
+        }
+    }
+
+    function clearGrid() {
+        let board = document.querySelector(".board");
+        let squares = board.querySelectorAll("div");
+        squares.forEach((div) => div.remove());
+        createCanvas(16)
+    }
+
+
+
+
+
+</script>
+
+</html>
